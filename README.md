@@ -57,3 +57,62 @@ File kết quả sẽ nằm trong thư mục `build/bin/`.
 
 > [!IMPORTANT]
 > Để sử dụng tính năng **Auto-open Firewall**, bạn cần chạy ứng dụng với quyền **Administrator**.
+
+---
+
+# 🇬🇧 English Instructions
+
+## ✨ Key Features
+
+- **TCP Proxy**: Forward traffic from a local port to any target address.
+- **Windows 11 UI**: Sleek Glassmorphism (Mica) design, dark mode support.
+- **Auto-open Firewall**: Automatically manages Windows Firewall rules (requires Admin privileges).
+- **History & Favorites**: Automatically saves and suggests the 10 most used ports/addresses.
+- **System Tray Icon**:
+  - Quick Toggle Proxy ON/OFF.
+  - "Recent Connections" menu for quick selection.
+  - Runs in background when window is closed.
+
+## 🚀 Usage Guide
+
+1.  **Launch**: Open `TunF` application.
+2.  **Configure**:
+    - **Proxy Port**: Enter the local port to listen on (e.g., `5678`).
+    - **Target Address**: Enter the target address to forward to (e.g., `localhost:1234`).
+3.  **Start Proxy**: Click **Start Proxy**.
+    - Check **Auto-open Windows Firewall** if you want other devices on the network to access it.
+4.  **System Tray**: When running, right-click the tray icon to:
+    - Quick Toggle Proxy.
+    - Select from **Recent Connections**.
+    - Show window or Quit.
+
+## 🛠️ Build Instructions
+
+### 1. Requirements
+
+- **Go**: v1.18 or higher.
+- **Node.js & NPM**: For frontend build.
+- **Wails CLI**: Install via `go install github.com/wailsapp/wails/v2/cmd/wails@latest`.
+
+### 2. Development Mode
+
+To run with live reload:
+
+```bash
+wails dev
+```
+
+### 3. Build Production EXE
+
+To build a lightweight, optimized executable:
+
+```bash
+wails build -clean -ldflags "-s -w"
+```
+
+Output file will be in `build/bin/`.
+
+---
+
+> [!IMPORTANT]
+> To use **Auto-open Firewall**, run the application as **Administrator**.
