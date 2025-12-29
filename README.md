@@ -1,6 +1,7 @@
 # TunF - Windows 11 Port Forwarding Utility
 
 Ứng dụng proxy TCP hiện đại, nhẹ và mạnh mẽ dành cho Windows 11, được xây dựng bằng Wails v2 (Go & React).
+Phục vụ nhu cầu thử nhiệm các dự án nội bộ cần kết nối ra internet nhanh chóng 
 
 ## ✨ Tính năng chính
 
