@@ -11,8 +11,9 @@ type Config struct {
 	LastTargetAddr   string   `json:"lastTargetAddr"`
 	AutoOpenFirewall bool     `json:"autoOpenFirewall"`
 	AutoStart        bool     `json:"autoStart"`
-	History          []string `json:"history"`       // Store as "Port|Target"
-	TargetHistory    []string `json:"targetHistory"` // Store as "Target"
+	History          []string `json:"history"`          // Store as "Port|Target"
+	TargetHistory    []string `json:"targetHistory"`    // Store as "Target"
+	ProxyPortHistory []string `json:"proxyPortHistory"` // Store as "Port"
 }
 
 func GetConfigPath() string {
@@ -33,6 +34,7 @@ func LoadConfig() Config {
 			AutoStart:        false,
 			History:          []string{},
 			TargetHistory:    []string{},
+			ProxyPortHistory: []string{},
 		}
 	}
 

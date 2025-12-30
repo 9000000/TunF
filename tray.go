@@ -1,7 +1,9 @@
 package main
 
 import (
+	"os"
 	"strings"
+	"time"
 
 	"github.com/getlantern/systray"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -86,6 +88,11 @@ func (a *App) onTrayReady() {
 			case <-mQuit.ClickedCh:
 				systray.Quit()
 				runtime.Quit(a.ctx)
+				// Force exit if it doesn't close in 1 second
+				go func() {
+					time.Sleep(1 * time.Second)
+					os.Exit(0)
+				}()
 
 			case <-a.refreshTrayChan:
 				updateStatus()

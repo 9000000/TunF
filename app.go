@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+
+	"github.com/getlantern/systray"
 )
 
 // App struct
@@ -25,6 +27,11 @@ func NewApp() *App {
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 	go a.setupTray()
+}
+
+// shutdown is called at application termination
+func (a *App) shutdown(ctx context.Context) {
+	systray.Quit()
 }
 
 // GetConfig returns the saved configuration
@@ -64,6 +71,7 @@ func (a *App) StartProxy(listenPort string, targetAddr string, manageFirewall bo
 	config.AutoOpenFirewall = manageFirewall
 	config.History = AddToHistory(config.History, listenPort, targetAddr)
 	config.TargetHistory = AddValueToHistory(config.TargetHistory, targetAddr)
+	config.ProxyPortHistory = AddValueToHistory(config.ProxyPortHistory, listenPort)
 	SaveConfig(config)
 
 	// Notify tray to refresh history

@@ -3,6 +3,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -32,7 +33,9 @@ func SetAutoStart(enable bool) error {
 		if err != nil {
 			return err
 		}
-		return k.SetStringValue(AppName, absPath)
+		// Add --hidden flag for autostart
+		cmd := fmt.Sprintf("\"%s\" --hidden", absPath)
+		return k.SetStringValue(AppName, cmd)
 	} else {
 		// Try to delete, ignore error if it doesn't exist
 		_ = k.DeleteValue(AppName)

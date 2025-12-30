@@ -10,6 +10,7 @@ function App() {
     const [autoStart, setAutoStart] = useState(false);
     const [history, setHistory] = useState<string[]>([]);
     const [targetHistory, setTargetHistory] = useState<string[]>([]);
+    const [proxyPortHistory, setProxyPortHistory] = useState<string[]>([]);
     const [statusText, setStatusText] = useState("Ready to proxy");
     const [logs, setLogs] = useState<string[]>(["Application started"]);
 
@@ -26,10 +27,21 @@ function App() {
             setAutoStart(config.autoStart);
             setHistory(config.history || []);
             setTargetHistory(config.targetHistory || []);
+            setProxyPortHistory(config.proxyPortHistory || []);
         }
     };
 
-    // ... existing checkStatus ...
+    // Check proxy status
+    const checkStatus = async () => {
+        const running = await IsProxyRunning();
+        setIsRunning(running);
+    };
+
+    // Load settings and check status on startup
+    useEffect(() => {
+        loadSettings();
+        checkStatus();
+    }, []);
 
     const handleAutoStartToggle = async () => {
         const newValue = !autoStart;
@@ -60,6 +72,7 @@ function App() {
                 const config = await GetConfig();
                 setHistory(config.history || []);
                 setTargetHistory(config.targetHistory || []);
+                setProxyPortHistory(config.proxyPortHistory || []);
             } else {
                 setStatusText(result);
                 addLog(`Failed: ${result}`);
@@ -88,19 +101,13 @@ function App() {
                         placeholder="e.g. 5678"
                         disabled={isRunning}
                     />
-                    {!isRunning && history.length > 0 && (
+                    {!isRunning && proxyPortHistory.length > 0 && (
                         <div className="history-chips">
-                            {history.map(entry => {
-                                const [port, target] = entry.split('|');
-                                return (
-                                    <span key={entry} onClick={() => {
-                                        setListenPort(port);
-                                        setTargetAddr(target);
-                                    }}>
-                                        {port}
-                                    </span>
-                                );
-                            })}
+                            {proxyPortHistory.map(port => (
+                                <span key={port} onClick={() => setListenPort(port)}>
+                                    {port}
+                                </span>
+                            ))}
                         </div>
                     )}
                 </div>

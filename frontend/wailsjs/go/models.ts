@@ -7,6 +7,7 @@ export namespace main {
 	    autoStart: boolean;
 	    history: string[];
 	    targetHistory: string[];
+	    proxyPortHistory: string[];
 	
 	    static createFrom(source: any = {}) {
 	        return new Config(source);
@@ -20,6 +21,7 @@ export namespace main {
 	        this.autoStart = source["autoStart"];
 	        this.history = source["history"];
 	        this.targetHistory = source["targetHistory"];
+	        this.proxyPortHistory = source["proxyPortHistory"];
 	    }
 	}
 

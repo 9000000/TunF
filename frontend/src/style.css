@@ -203,7 +203,7 @@ input:focus {
   background: rgba(0, 0, 0, 0.2);
   padding: 12px;
   border-radius: 12px;
-  max-height: 100px;
+  height: 100px;
   overflow-y: auto;
   text-align: left;
 }
