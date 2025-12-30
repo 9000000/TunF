@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/getlantern/systray"
+	"github.com/energye/systray"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -47,8 +47,14 @@ func (a *App) onTrayReady() {
 	updateStatus := func() {
 		if a.proxyService.IsRunning() {
 			mToggle.SetTitle("Stop Proxy")
+			if len(iconActiveData) > 0 {
+				systray.SetIcon(iconActiveData)
+			}
 		} else {
 			mToggle.SetTitle("Start Proxy")
+			if len(iconData) > 0 {
+				systray.SetIcon(iconData)
+			}
 		}
 
 		// Update History Submenu
@@ -69,44 +75,56 @@ func (a *App) onTrayReady() {
 		}
 	}
 
-	// Main Tray Loop
+	// Toggle proxy on left-click
+	systray.SetOnClick(func(menu systray.IMenu) {
+		if a.proxyService.IsRunning() {
+			a.StopProxy()
+		} else {
+			config := LoadConfig()
+			a.StartProxy(config.LastListenPort, config.LastTargetAddr, config.AutoOpenFirewall)
+		}
+		updateStatus()
+	})
+
+	// Menu Item Click Handlers
+	mToggle.Click(func() {
+		if a.proxyService.IsRunning() {
+			a.StopProxy()
+		} else {
+			config := LoadConfig()
+			a.StartProxy(config.LastListenPort, config.LastTargetAddr, config.AutoOpenFirewall)
+		}
+		updateStatus()
+	})
+
+	mShow.Click(func() {
+		runtime.WindowShow(a.ctx)
+	})
+
+	mQuit.Click(func() {
+		systray.Quit()
+		runtime.Quit(a.ctx)
+		// Force exit if it doesn't close in 1 second
+		go func() {
+			time.Sleep(1 * time.Second)
+			os.Exit(0)
+		}()
+	})
+
+	// History items click handlers
+	for i := 0; i < 5; i++ {
+		idx := i
+		historyItems[idx].menuItem.Click(func() {
+			a.quickStart(historyItems[idx], updateStatus)
+		})
+	}
+
+	// Handle refresh channel in background
 	go func() {
 		for {
 			select {
-			case <-mToggle.ClickedCh:
-				if a.proxyService.IsRunning() {
-					a.StopProxy()
-				} else {
-					config := LoadConfig()
-					a.StartProxy(config.LastListenPort, config.LastTargetAddr, config.AutoOpenFirewall)
-				}
-				updateStatus()
-
-			case <-mShow.ClickedCh:
-				runtime.WindowShow(a.ctx)
-
-			case <-mQuit.ClickedCh:
-				systray.Quit()
-				runtime.Quit(a.ctx)
-				// Force exit if it doesn't close in 1 second
-				go func() {
-					time.Sleep(1 * time.Second)
-					os.Exit(0)
-				}()
-
 			case <-a.refreshTrayChan:
 				updateStatus()
-
-			case <-historyItems[0].menuItem.ClickedCh:
-				a.quickStart(historyItems[0], updateStatus)
-			case <-historyItems[1].menuItem.ClickedCh:
-				a.quickStart(historyItems[1], updateStatus)
-			case <-historyItems[2].menuItem.ClickedCh:
-				a.quickStart(historyItems[2], updateStatus)
-			case <-historyItems[3].menuItem.ClickedCh:
-				a.quickStart(historyItems[3], updateStatus)
-			case <-historyItems[4].menuItem.ClickedCh:
-				a.quickStart(historyItems[4], updateStatus)
 			}
 		}
 	}()
