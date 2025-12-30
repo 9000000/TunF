@@ -57,16 +57,7 @@ func showExistingWindow() {
 }
 
 func main() {
-	// Check if already running
-	if isAlreadyRunning() {
-		showExistingWindow()
-		return
-	}
-
-	// Create an instance of the app structure
-	app := NewApp()
-
-	// Parse command line arguments
+	// Parse command line arguments first
 	startHidden := false
 	for _, arg := range os.Args {
 		if arg == "--hidden" {
@@ -74,6 +65,18 @@ func main() {
 			break
 		}
 	}
+
+	// Check if already running
+	if isAlreadyRunning() {
+		// Only show window if not started with --hidden
+		if !startHidden {
+			showExistingWindow()
+		}
+		return
+	}
+
+	// Create an instance of the app structure
+	app := NewApp()
 
 	// Create application with options
 	err := wails.Run(&options.App{

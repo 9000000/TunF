@@ -1,7 +1,7 @@
 # TunF - Windows 11 Port Forwarding Utility
 
 Ứng dụng proxy TCP hiện đại, nhẹ và mạnh mẽ dành cho Windows 11, được xây dựng bằng Wails v2 (Go & React).
-Phục vụ nhu cầu thử nhiệm các dự án nội bộ cần kết nối ra internet nhanh chóng 
+Phục vụ nhu cầu thử nhiệm các dự án nội bộ cần kết nối ra internet nhanh chóng
 
 ## ✨ Tính năng chính
 
@@ -116,3 +116,27 @@ Output file will be in `build/bin/`.
 
 > [!IMPORTANT]
 > To use **Auto-open Firewall**, run the application as **Administrator**.
+
+---
+
+## ☕ Support / Ủng hộ
+
+If you find this project useful, consider buying me a coffee!
+
+Nếu bạn thấy dự án này hữu ích, hãy ủng hộ tôi một ly cà phê!
+
+<p align="center">
+  <img src="qr-donate.jpg" alt="QR Code Donate" width="200">
+</p>
+
+<p align="center">
+  <a href="https://buymeacoffee.com/matrix1988" target="_blank">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="50">
+  </a>
+</p>
+
+**Link**: [https://buymeacoffee.com/matrix1988](https://buymeacoffee.com/matrix1988)
+
+---
+
+Made with ❤️ by 9000000

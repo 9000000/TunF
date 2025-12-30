@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './style.css';
 import { StartProxy, StopProxy, IsProxyRunning, GetConfig, SetAutoStart } from "../wailsjs/go/main/App";
+import qrDonate from './assets/qr-donate.jpg';
 
 function App() {
     const [isRunning, setIsRunning] = useState(false);
@@ -13,6 +14,7 @@ function App() {
     const [proxyPortHistory, setProxyPortHistory] = useState<string[]>([]);
     const [statusText, setStatusText] = useState("Ready to proxy");
     const [logs, setLogs] = useState<string[]>(["Application started"]);
+    const [showDonation, setShowDonation] = useState(false);
 
     const addLog = (msg: string) => {
         setLogs(prev => [msg, ...prev].slice(0, 5));
@@ -177,7 +179,47 @@ function App() {
                         <div key={i}>[{new Date().toLocaleTimeString()}] {log}</div>
                     ))}
                 </div>
+
+                <button 
+                    className="heart-button"
+                    onClick={() => setShowDonation(true)}
+                    title="Support / Ủng hộ"
+                >
+                    ❤️
+                </button>
             </div>
+
+            {showDonation && (
+                <div className="modal-overlay" onClick={() => setShowDonation(false)}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="modal-close" onClick={() => setShowDonation(false)}>×</button>
+                        <div className="modal-header">
+                            <span className="modal-heart">❤️</span>
+                            <h2>Ủng hộ / Support</h2>
+                        </div>
+                        <p className="modal-text">
+                            Nếu bạn thấy TunF hữu ích, hãy ủng hộ tác giả một ly cà phê nhé!
+                        </p>
+                        <p className="modal-text-en">
+                            If you find TunF useful, consider buying me a coffee!
+                        </p>
+                        <img 
+                            src={qrDonate} 
+                            alt="QR Code Donate" 
+                            className="qr-code"
+                        />
+                        <a 
+                            href="https://buymeacoffee.com/matrix1988" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="donation-link"
+                        >
+                            ☕ Buy me a coffee
+                        </a>
+                        <p className="modal-author">Made with ❤️ by 9000000</p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
