@@ -83,7 +83,6 @@ func (a *App) onTrayReady() {
 			config := LoadConfig()
 			a.StartProxy(config.LastListenPort, config.LastTargetAddr, config.AutoOpenFirewall)
 		}
-		updateStatus()
 	})
 
 	// Menu Item Click Handlers
@@ -94,7 +93,6 @@ func (a *App) onTrayReady() {
 			config := LoadConfig()
 			a.StartProxy(config.LastListenPort, config.LastTargetAddr, config.AutoOpenFirewall)
 		}
-		updateStatus()
 	})
 
 	mShow.Click(func() {
@@ -115,7 +113,7 @@ func (a *App) onTrayReady() {
 	for i := 0; i < 5; i++ {
 		idx := i
 		historyItems[idx].menuItem.Click(func() {
-			a.quickStart(historyItems[idx], updateStatus)
+			a.quickStart(historyItems[idx])
 		})
 	}
 
@@ -129,13 +127,12 @@ func (a *App) onTrayReady() {
 	updateStatus()
 }
 
-func (a *App) quickStart(item *trayHistoryItem, refresh func()) {
+func (a *App) quickStart(item *trayHistoryItem) {
 	if a.proxyService.IsRunning() {
 		a.StopProxy()
 	}
 	config := LoadConfig()
 	a.StartProxy(item.port, item.target, config.AutoOpenFirewall)
-	refresh()
 }
 
 func (a *App) onTrayExit() {}

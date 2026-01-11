@@ -113,7 +113,7 @@ func (p *ProxyService) Stop() {
 	}
 
 	if p.manageFirewall {
-		p.removeFirewallRule()
+		go p.removeFirewallRule()
 	}
 
 	if p.cancel != nil {
