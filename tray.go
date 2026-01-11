@@ -121,11 +121,8 @@ func (a *App) onTrayReady() {
 
 	// Handle refresh channel in background
 	go func() {
-		for {
-			select {
-			case <-a.refreshTrayChan:
-				updateStatus()
-			}
+		for range a.refreshTrayChan {
+			updateStatus()
 		}
 	}()
 

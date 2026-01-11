@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './style.css';
 import { StartProxy, StopProxy, IsProxyRunning, GetConfig, SetAutoStart } from "../wailsjs/go/main/App";
+import { EventsOn } from "../wailsjs/runtime/runtime";
 import qrDonate from './assets/qr-donate.jpg';
 
 function App() {
@@ -43,6 +44,18 @@ function App() {
     useEffect(() => {
         loadSettings();
         checkStatus();
+
+        // Listen for proxy state changes (e.g. from System Tray)
+        EventsOn("proxy-state-change", (running: boolean) => {
+            setIsRunning(running);
+            if (running) {
+                setStatusText(`Running (External Update)`);
+                addLog(`Proxy started via System Tray`);
+            } else {
+                setStatusText("Proxy stopped");
+                addLog(`Proxy stopped via System Tray`);
+            }
+        });
     }, []);
 
     const handleAutoStartToggle = async () => {

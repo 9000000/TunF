@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/getlantern/systray"
+	"github.com/energye/systray"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -80,12 +81,19 @@ func (a *App) StartProxy(listenPort string, targetAddr string, manageFirewall bo
 	default:
 	}
 
+	runtime.EventsEmit(a.ctx, "proxy-state-change", true)
 	return "Success"
 }
 
 // StopProxy stops the TCP proxy
 func (a *App) StopProxy() {
 	a.proxyService.Stop()
+	// Notify tray to update status
+	select {
+	case a.refreshTrayChan <- true:
+	default:
+	}
+	runtime.EventsEmit(a.ctx, "proxy-state-change", false)
 }
 
 // IsProxyRunning returns true if the proxy is running
